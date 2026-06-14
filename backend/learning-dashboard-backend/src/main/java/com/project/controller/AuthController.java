@@ -97,7 +97,8 @@ public class AuthController {
 
         String token =
                 jwtUtil.generateToken(
-                        user.getEmail());
+                        user.getEmail(),
+                        user.getRole());
 
         Map<String, String> response =
                 new HashMap<>();
