@@ -45,6 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 role = jwtUtil.extractRole(jwt);
             } catch (Exception e) {
                 logger.error("Error extracting details from JWT: " + e.getMessage());
+                e.printStackTrace();
             }
         }
 

@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 
@@ -17,6 +17,13 @@ app.add_middleware(
 # BACKEND URLS
 SPRING_URL = "http://localhost:2007"
 NODE_URL = "http://localhost:5001"
+
+# Helper to forward Authorization header
+def get_headers(request: Request):
+    headers = {}
+    if "authorization" in request.headers:
+        headers["Authorization"] = request.headers["authorization"]
+    return headers
 
 # -----------------------------------
 # AUTH APIs (Spring Boot)
@@ -48,42 +55,46 @@ def register(data: dict):
 # -----------------------------------
 
 @app.get("/courses")
-def get_courses():
+def get_courses(request: Request):
 
     response = requests.get(
-        f"{SPRING_URL}/courses"
+        f"{SPRING_URL}/courses",
+        headers=get_headers(request)
     )
 
     return response.json()
 
 
 @app.post("/courses")
-def add_course(data: dict):
+def add_course(data: dict, request: Request):
 
     response = requests.post(
         f"{SPRING_URL}/courses",
-        json=data
+        json=data,
+        headers=get_headers(request)
     )
 
     return response.json()
 
 
 @app.put("/courses/{id}")
-def update_course(id: int, data: dict):
+def update_course(id: int, data: dict, request: Request):
 
     response = requests.put(
         f"{SPRING_URL}/courses/{id}",
-        json=data
+        json=data,
+        headers=get_headers(request)
     )
 
     return response.json()
 
 
 @app.delete("/courses/{id}")
-def delete_course(id: int):
+def delete_course(id: int, request: Request):
 
     response = requests.delete(
-        f"{SPRING_URL}/courses/{id}"
+        f"{SPRING_URL}/courses/{id}",
+        headers=get_headers(request)
     )
 
     return response.text
@@ -93,24 +104,38 @@ def delete_course(id: int):
 # -----------------------------------
 
 @app.get("/api/progress")
-def get_progress():
-    response = requests.get(f"{NODE_URL}/api/progress")
+def get_progress(request: Request):
+    response = requests.get(
+        f"{NODE_URL}/api/progress",
+        headers=get_headers(request)
+    )
     return response.json()
 
 
 @app.post("/api/progress")
-def add_progress(data: dict):
-    response = requests.post(f"{NODE_URL}/api/progress", json=data)
+def add_progress(data: dict, request: Request):
+    response = requests.post(
+        f"{NODE_URL}/api/progress",
+        json=data,
+        headers=get_headers(request)
+    )
     return response.json()
 
 
 @app.put("/api/progress/{id}")
-def update_progress(id: str, data: dict):
-    response = requests.put(f"{NODE_URL}/api/progress/{id}", json=data)
+def update_progress(id: str, data: dict, request: Request):
+    response = requests.put(
+        f"{NODE_URL}/api/progress/{id}",
+        json=data,
+        headers=get_headers(request)
+    )
     return response.json()
 
 
 @app.delete("/api/progress/{id}")
-def delete_progress(id: str):
-    response = requests.delete(f"{NODE_URL}/api/progress/{id}")
+def delete_progress(id: str, request: Request):
+    response = requests.delete(
+        f"{NODE_URL}/api/progress/{id}",
+        headers=get_headers(request)
+    )
     return response.json()

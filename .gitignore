@@ -20,3 +20,8 @@
 
 # macOS
 .DS_Store
+
+# Databases
+database/data/
+database/postgres.log
+
