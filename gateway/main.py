@@ -14,12 +14,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# SPRING BOOT URL
-
+# BACKEND URLS
 SPRING_URL = "http://localhost:2007"
+NODE_URL = "http://localhost:5001"
 
 # -----------------------------------
-# AUTH APIs
+# AUTH APIs (Spring Boot)
 # -----------------------------------
 
 @app.post("/auth/login")
@@ -44,7 +44,7 @@ def register(data: dict):
     return response.json()
 
 # -----------------------------------
-# COURSE APIs
+# COURSE APIs (Spring Boot)
 # -----------------------------------
 
 @app.get("/courses")
@@ -87,3 +87,30 @@ def delete_course(id: int):
     )
 
     return response.text
+
+# -----------------------------------
+# DETAILED PROGRESS / STUDY LOG APIs (Node.js & MongoDB)
+# -----------------------------------
+
+@app.get("/api/progress")
+def get_progress():
+    response = requests.get(f"{NODE_URL}/api/progress")
+    return response.json()
+
+
+@app.post("/api/progress")
+def add_progress(data: dict):
+    response = requests.post(f"{NODE_URL}/api/progress", json=data)
+    return response.json()
+
+
+@app.put("/api/progress/{id}")
+def update_progress(id: str, data: dict):
+    response = requests.put(f"{NODE_URL}/api/progress/{id}", json=data)
+    return response.json()
+
+
+@app.delete("/api/progress/{id}")
+def delete_progress(id: str):
+    response = requests.delete(f"{NODE_URL}/api/progress/{id}")
+    return response.json()
