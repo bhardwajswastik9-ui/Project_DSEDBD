@@ -1,0 +1,22 @@
+# Logs
+*.log
+*.err.log
+
+# Node.js
+**/node_modules/
+**/dist/
+.env
+
+# Java / Spring Boot
+**/target/
+**/.metadata/
+**/.settings/
+**/.classpath
+**/.project
+**/.factorypath
+**/.mvn/
+**/bin/
+*.class
+
+# macOS
+.DS_Store
