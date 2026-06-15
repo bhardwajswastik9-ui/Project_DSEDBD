@@ -61,10 +61,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_GATEWAY_URL
-        fromService:
-          name: learning-gateway
-          type: web
-          property: url
+        value: https://learning-gateway.onrender.com
 
 databases:
   - name: learning-postgres
