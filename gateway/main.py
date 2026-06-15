@@ -15,9 +15,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Helper to format URL to handle Render's dynamic hostnames
+def format_url(url_str, default_port):
+    if not url_str:
+        return ""
+    if not url_str.startswith("http://") and not url_str.startswith("https://"):
+        url_str = "http://" + url_str
+    
+    # Check if a port is specified in the URL
+    parts = url_str.replace("https://", "").replace("http://", "").split(":")
+    if len(parts) == 1:
+        # Default to 10000 on Render because it is the default port for all web services
+        port = "10000" if os.getenv("RENDER") else default_port
+        url_str = f"{url_str}:{port}"
+    return url_str
+
 # BACKEND URLS
-SPRING_URL = os.getenv("SPRING_URL", "http://localhost:2007")
-NODE_URL = os.getenv("NODE_URL", "http://localhost:5001")
+SPRING_URL = format_url(os.getenv("SPRING_URL", "http://localhost:2007"), "2007")
+NODE_URL = format_url(os.getenv("NODE_URL", "http://localhost:5001"), "5001")
 
 
 # Helper to forward Authorization header
