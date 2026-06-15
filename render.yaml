@@ -53,11 +53,12 @@ services:
         sync: false # User will provide their MongoDB Atlas URI in the Render UI
 
   # 4. React Frontend (Static Site)
-  - type: static
+  - type: web
     name: learning-frontend
+    env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    publishPath: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_GATEWAY_URL
         fromService:
