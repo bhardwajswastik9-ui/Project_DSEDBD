@@ -8,15 +8,9 @@ services:
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: SPRING_URL
-        fromService:
-          name: learning-spring-backend
-          type: web
-          property: host
+        value: http://learning-spring-backend:2007
       - key: NODE_URL
-        fromService:
-          name: learning-node-backend
-          type: web
-          property: host
+        value: http://learning-node-backend:5001
 
   # 2. Spring Boot Backend (Web Service via Docker)
   - type: web
@@ -24,10 +18,18 @@ services:
     env: docker
     rootDir: backend/learning-dashboard-backend
     envVars:
-      - key: SPRING_DATASOURCE_URL
+      - key: DB_HOST
         fromDatabase:
           name: learning-postgres
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: learning-postgres
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: learning-postgres
+          property: database
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: learning-postgres
@@ -45,6 +47,8 @@ services:
     buildCommand: npm install
     startCommand: npm start
     envVars:
+      - key: PORT
+        value: 5001
       - key: MONGO_URI
         sync: false # User will provide their MongoDB Atlas URI in the Render UI
 
@@ -60,7 +64,7 @@ services:
         fromService:
           name: learning-gateway
           type: web
-          property: host
+          property: url
 
 databases:
   - name: learning-postgres
