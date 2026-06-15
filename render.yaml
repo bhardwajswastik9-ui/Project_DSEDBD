@@ -20,6 +20,8 @@ services:
     env: docker
     rootDir: backend/learning-dashboard-backend
     envVars:
+      - key: PORT
+        value: 2007
       - key: DB_HOST
         fromDatabase:
           name: learning-postgres
