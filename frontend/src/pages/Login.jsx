@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { GATEWAY_URL } from "../services/api";
 
 function Login() {
 
@@ -20,7 +21,7 @@ function Login() {
     try {
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/auth/login",
+        `${GATEWAY_URL}/auth/login`,
         {
           email,
           password

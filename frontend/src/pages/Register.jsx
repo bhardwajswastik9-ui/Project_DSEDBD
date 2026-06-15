@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { GATEWAY_URL } from "../services/api";
 import "./Login.css";
 
 function Register() {
@@ -19,7 +20,7 @@ function Register() {
     try {
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/auth/register",
+        `${GATEWAY_URL}/auth/register`,
         {
           name,
           email,

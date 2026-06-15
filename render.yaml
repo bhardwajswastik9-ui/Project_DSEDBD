@@ -1,0 +1,67 @@
+services:
+  # 1. FastAPI Gateway (Web Service)
+  - type: web
+    name: learning-gateway
+    env: python
+    rootDir: gateway
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SPRING_URL
+        fromService:
+          name: learning-spring-backend
+          type: web
+          property: host
+      - key: NODE_URL
+        fromService:
+          name: learning-node-backend
+          type: web
+          property: host
+
+  # 2. Spring Boot Backend (Web Service via Docker)
+  - type: web
+    name: learning-spring-backend
+    env: docker
+    rootDir: backend/learning-dashboard-backend
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: learning-postgres
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: learning-postgres
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: learning-postgres
+          property: password
+
+  # 3. Node.js Backend (Web Service)
+  - type: web
+    name: learning-node-backend
+    env: node
+    rootDir: backend/node-backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false # User will provide their MongoDB Atlas URI in the Render UI
+
+  # 4. React Frontend (Static Site)
+  - type: web
+    name: learning-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_GATEWAY_URL
+        fromService:
+          name: learning-gateway
+          type: web
+          property: host
+
+databases:
+  - name: learning-postgres
+    plan: free

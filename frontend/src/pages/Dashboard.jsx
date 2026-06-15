@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { GATEWAY_URL } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
@@ -17,7 +18,7 @@ function Dashboard() {
   useEffect(() => {
 
     axios.get(
-      "http://127.0.0.1:8000/courses"
+      `${GATEWAY_URL}/courses`
     )
     .then((response) => {
 

@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import requests
+import os
 
 app = FastAPI()
 
@@ -15,8 +16,9 @@ app.add_middleware(
 )
 
 # BACKEND URLS
-SPRING_URL = "http://localhost:2007"
-NODE_URL = "http://localhost:5001"
+SPRING_URL = os.getenv("SPRING_URL", "http://localhost:2007")
+NODE_URL = os.getenv("NODE_URL", "http://localhost:5001")
+
 
 # Helper to forward Authorization header
 def get_headers(request: Request):

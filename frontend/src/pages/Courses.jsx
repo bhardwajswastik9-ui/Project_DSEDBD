@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { GATEWAY_URL } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 const today = new Date().toISOString().slice(0, 10);
@@ -38,7 +39,7 @@ function Courses() {
 
       const response =
         await axios.get(
-          "http://127.0.0.1:8000/courses"
+          `${GATEWAY_URL}/courses`
         );
 
       // SAFE ARRAY CHECK
@@ -82,7 +83,7 @@ function Courses() {
     try {
 
       await axios.post(
-          "http://127.0.0.1:8000/courses",
+          `${GATEWAY_URL}/courses`,
         {
           courseName,
           instructor,
@@ -119,7 +120,7 @@ function Courses() {
     try {
 
       await axios.delete(
-        `http://127.0.0.1:8000/courses/${id}`
+        `${GATEWAY_URL}/courses/${id}`
       );
 
       alert("Course Deleted");
@@ -303,7 +304,7 @@ function Courses() {
     try {
 
       await axios.put(
-        `http://127.0.0.1:8000/courses/${course.id}`,
+        `${GATEWAY_URL}/courses/${course.id}`,
         {
           courseName:
             course.courseName,

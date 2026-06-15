@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { GATEWAY_URL } from "../services/api";
 import {
   Bar,
   BarChart,
@@ -17,7 +18,6 @@ import {
   YAxis
 } from "recharts";
 
-const GATEWAY_URL = "http://127.0.0.1:8000";
 
 const clamp = (value, min = 0, max = 100) =>
   Math.min(max, Math.max(min, Number(value) || 0));

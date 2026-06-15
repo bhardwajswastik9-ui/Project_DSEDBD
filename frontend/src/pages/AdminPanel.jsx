@@ -4,6 +4,7 @@ import React, {
 } from "react";
 
 import axios from "axios";
+import { GATEWAY_URL } from "../services/api";
 
 import {
   useNavigate
@@ -37,7 +38,7 @@ function AdminPanel() {
 
       const response =
         await axios.get(
-          "http://127.0.0.1:8000/courses"
+          `${GATEWAY_URL}/courses`
         );
 
       setCourses(response.data);

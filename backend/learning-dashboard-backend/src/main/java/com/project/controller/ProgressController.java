@@ -9,7 +9,8 @@ import com.project.entity.Progress;
 import com.project.service.ProgressService;
 
 @RestController
-@RequestMapping("/progress")
+@RequestMapping("/api/progress")
+
 @CrossOrigin("*")
 public class ProgressController {
 
